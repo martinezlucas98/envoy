@@ -476,10 +476,11 @@ Utility::parseHttp1Settings(const envoy::config::core::v3::Http1ProtocolOptions&
   ret.enable_trailers_ = config.enable_trailers();
   ret.allow_chunked_length_ = config.allow_chunked_length();
 
+  // fixfix switch
   if (config.header_key_format().has_proper_case_words()) {
     ret.header_key_format_ = Http1Settings::HeaderKeyFormat::ProperCase;
-  } else {
-    ret.header_key_format_ = Http1Settings::HeaderKeyFormat::Default;
+  } else if (config.header_key_format().has_stateful_formatter()) {
+    ASSERT(false); // fixfix
   }
 
   return ret;
