@@ -17,7 +17,6 @@ envoy_extension_cc_test(
     extension_name = "envoy.filters.http.http_example_cpp20",
     deps = [
         "//source/extensions/filters/http/http_example_cpp20:http_example_cpp20_filter_lib",
-        "//test/extensions/common/aws:aws_mocks",
         "//test/mocks/http:http_mocks",
     ],
 )

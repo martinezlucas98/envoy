@@ -7,7 +7,7 @@ load(
 
 licenses(["notice"])  # Apache 2
 
-# L7 HTTP AWS request signing filter
+# HTTP filter example with C++20 optional features
 # Public docs: docs/root/configuration/http_filters/http_example_cpp20_filter.rst
 
 envoy_extension_package()
@@ -18,8 +18,6 @@ envoy_cc_library(
     hdrs = ["http_example_cpp20_filter.h"],
     deps = [
         "//include/envoy/http:filter_interface",
-        "//source/extensions/common/aws:credentials_provider_impl_lib",
-        "//source/extensions/common/aws:signer_impl_lib",
         "//source/extensions/filters/http/common:pass_through_filter_lib",
         "@envoy_api//envoy/extensions/filters/http/http_example_cpp20/v3:pkg_cc_proto",
     ],

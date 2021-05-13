@@ -1,7 +1,5 @@
 #pragma once
 
-//#include "envoy/extensions/filters/http/aws_request_signing/v3/aws_request_signing.pb.h"
-//#include "envoy/extensions/filters/http/aws_request_signing/v3/aws_request_signing.pb.validate.h"
 #include "envoy/extensions/filters/http/http_example_cpp20/v3/http_example_cpp20.pb.h"
 #include "envoy/extensions/filters/http/http_example_cpp20/v3/http_example_cpp20.pb.validate.h"
 
@@ -14,7 +12,7 @@ namespace HttpFilters {
 namespace HttpExampleCpp20 {
 
 /**
- * Config registration for the AWS request signing filter.
+ * Config registration for the HTTP example cpp20 filter.
  */
 class HttpExampleCpp20FilterFactory
     : public Common::FactoryBase<
@@ -29,7 +27,7 @@ private:
       const std::string& stats_prefix, Server::Configuration::FactoryContext& context) override;
 };
 
-} // namespace AwsRequestSigningFilter
+} // namespace HttpExampleCpp20
 } // namespace HttpFilters
 } // namespace Extensions
 } // namespace Envoy

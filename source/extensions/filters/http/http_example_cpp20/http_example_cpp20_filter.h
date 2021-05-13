@@ -1,14 +1,14 @@
 #pragma once
 
 //#include "envoy/extensions/filters/http/aws_request_signing/v3/aws_request_signing.pb.h"
+#include <string>
+
 #include "envoy/extensions/filters/http/http_example_cpp20/v3/http_example_cpp20.pb.h"
 #include "envoy/http/filter.h"
 #include "envoy/stats/scope.h"
 #include "envoy/stats/stats_macros.h"
 
 #include "extensions/filters/http/common/pass_through_filter.h"
-
-#include <string>
 
 namespace Envoy {
 namespace Extensions {
@@ -19,7 +19,7 @@ namespace HttpExampleCpp20 {
  * All stats for the AWS request signing filter. @see stats_macros.h
  */
 // clang-format off
-#define ALL_AWS_REQUEST_SIGNING_FILTER_STATS(COUNTER)                                                           \
+#define ALL_HTTP_EXAMPLE_CPP20_FILTER_STATS(COUNTER)                                                           \
   COUNTER(signing_added)                                                                        \
   COUNTER(signing_failed)
 // clang-format on
@@ -28,7 +28,7 @@ namespace HttpExampleCpp20 {
  * Wrapper struct filter stats. @see stats_macros.h
  */
 struct FilterStats {
-  ALL_AWS_REQUEST_SIGNING_FILTER_STATS(GENERATE_COUNTER_STRUCT)
+  ALL_HTTP_EXAMPLE_CPP20_FILTER_STATS(GENERATE_COUNTER_STRUCT)
 };
 
 /**
@@ -37,7 +37,6 @@ struct FilterStats {
 class FilterConfig {
 public:
   virtual ~FilterConfig() = default;
-
 
   /**
    * @return the filter stats.
@@ -57,7 +56,7 @@ public:
 using FilterConfigSharedPtr = std::shared_ptr<FilterConfig>;
 
 /**
- * Configuration for the AWS request signing filter.
+ * Configuration for the HTTP Example cpp20 filter.
  */
 class FilterConfigImpl : public FilterConfig {
 public:
@@ -68,8 +67,8 @@ public:
   FilterStats& stats() override;
   const std::string& hostRewrite() const override;
 
-  const std::string& key() const override ;//{ return key_; };
-  const std::string& val() const override ;//{ return val_; };
+  const std::string& key() const override;
+  const std::string& val() const override;
 
 private:
   FilterStats stats_;
@@ -80,7 +79,7 @@ private:
 };
 
 /**
- * HTTP AWS request signing auth filter.
+ * HTTP Example cpp20 auth filter.
  */
 class Filter : public Http::PassThroughDecoderFilter, Logger::Loggable<Logger::Id::filter> {
 public:
@@ -97,7 +96,7 @@ private:
   const std::string headerValue() const;
 };
 
-} // namespace HttpExampleCpp20Filter
+} // namespace HttpExampleCpp20
 } // namespace HttpFilters
 } // namespace Extensions
 } // namespace Envoy

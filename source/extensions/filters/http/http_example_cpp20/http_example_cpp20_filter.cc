@@ -1,6 +1,5 @@
 #include "extensions/filters/http/http_example_cpp20/http_example_cpp20_filter.h"
 
-//#include "envoy/extensions/filters/http/aws_request_signing/v3/aws_request_signing.pb.h"
 #include "envoy/extensions/filters/http/http_example_cpp20/v3/http_example_cpp20.pb.h"
 
 #include <string>
@@ -11,13 +10,10 @@ namespace HttpFilters {
 namespace HttpExampleCpp20 {
 
 FilterConfigImpl::FilterConfigImpl(const std::string& stats_prefix, Stats::Scope& scope,
-                                   const std::string& host_rewrite,
-                                   const std::string& key, const std::string& value)
-    : stats_(Filter::generateStats(stats_prefix, scope)),
-      host_rewrite_(host_rewrite), key_(key), val_(value) {}
-
-// FilterConfig::FilterConfig(const sample::Decoder& proto_config)
-// : key_(proto_config.key()), val_(proto_config.val()) {}
+                                   const std::string& host_rewrite, const std::string& key,
+                                   const std::string& value)
+    : stats_(Filter::generateStats(stats_prefix, scope)), host_rewrite_(host_rewrite), key_(key),
+      val_(value) {}
 
 Filter::Filter(const std::shared_ptr<FilterConfig>& config) : config_(config) {}
 
@@ -29,7 +25,7 @@ const std::string& FilterConfigImpl::val() const { return val_; }
 
 FilterStats Filter::generateStats(const std::string& prefix, Stats::Scope& scope) {
   const std::string final_prefix = prefix + "http_example_cpp20.";
-  return {ALL_AWS_REQUEST_SIGNING_FILTER_STATS(POOL_COUNTER_PREFIX(scope, final_prefix))};
+  return {ALL_HTTP_EXAMPLE_CPP20_FILTER_STATS(POOL_COUNTER_PREFIX(scope, final_prefix))};
 }
 
 const Http::LowerCaseString Filter::headerKey() const {
@@ -57,7 +53,7 @@ Http::FilterHeadersStatus Filter::decodeHeaders(Http::RequestHeaderMap& headers,
   return Http::FilterHeadersStatus::Continue;
 }
 
-} // namespace AwsRequestSigningFilter
+} // namespace HttpExampleCpp20
 } // namespace HttpFilters
 } // namespace Extensions
 } // namespace Envoy
