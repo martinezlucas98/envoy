@@ -50,7 +50,7 @@ public:
   std::unique_ptr<HttpExampleCpp20::Filter> filter_;
 };
 
-TEST_F(HttpExampleCpp20FilterTest, GETWithHeader) {
+TEST_F(HttpExampleCpp20FilterTest, RequestWithHeader) {
   setup();
   filter_config_->host_rewrite_ = "foo";
   filter_config_->key_ = "fooKey";
@@ -63,7 +63,7 @@ TEST_F(HttpExampleCpp20FilterTest, GETWithHeader) {
   EXPECT_EQ("fooVal", ret.result().value());
 }
 
-TEST_F(HttpExampleCpp20FilterTest, associativeContainerUseContains) {
+TEST_F(HttpExampleCpp20FilterTest, AssociativeContainerUseContains) {
   setup();
   filter_config_->associative_container_use_contains_ = true;
   // EXPECT_CALL(*(filter_config_->associative_container_use_contains_),
@@ -89,7 +89,7 @@ TEST_F(HttpExampleCpp20FilterTest, associativeContainerUseContains) {
   }
 }
 #if defined(__cpp_using_enum)
-TEST_F(HttpExampleCpp20FilterTest, enumMembersInScope) {
+TEST_F(HttpExampleCpp20FilterTest, EnumMembersInScope) {
   setup();
 
   // feature is on
@@ -115,7 +115,7 @@ TEST_F(HttpExampleCpp20FilterTest, enumMembersInScope) {
 }
 #endif
 
-TEST_F(HttpExampleCpp20FilterTest, strStartsWith) {
+TEST_F(HttpExampleCpp20FilterTest, StrStartsWith) {
   setup();
 
   // feature is on
@@ -140,7 +140,7 @@ TEST_F(HttpExampleCpp20FilterTest, strStartsWith) {
   }
 }
 
-TEST_F(HttpExampleCpp20FilterTest, strEndsWith) {
+TEST_F(HttpExampleCpp20FilterTest, StrEndsWith) {
   setup();
 
   // feature is on
