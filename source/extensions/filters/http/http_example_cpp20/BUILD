@@ -16,6 +16,7 @@ envoy_cc_library(
     name = "http_example_cpp20_filter_lib",
     srcs = ["http_example_cpp20_filter.cc"],
     hdrs = ["http_example_cpp20_filter.h"],
+    copts = ["-std=c++20"],
     deps = [
         "//include/envoy/http:filter_interface",
         "//source/extensions/filters/http/common:pass_through_filter_lib",
@@ -27,6 +28,7 @@ envoy_cc_extension(
     name = "config",
     srcs = ["config.cc"],
     hdrs = ["config.h"],
+    copts = ["-std=c++20"],
     category = "envoy.filters.http",
     security_posture = "requires_trusted_downstream_and_upstream",
     status = "alpha",

@@ -51,6 +51,11 @@ public:
   // FilterConfig(const sample::Decoder& proto_config);
   virtual const std::string& key() const PURE;
   virtual const std::string& val() const PURE;
+
+  virtual const bool& associativeContainerUseContains() const PURE;
+  virtual const bool& enumMembersInScope() const PURE;
+  virtual const bool& strStartsWith() const PURE;
+  virtual const bool& strEndsWith() const PURE;
 };
 
 using FilterConfigSharedPtr = std::shared_ptr<FilterConfig>;
@@ -62,13 +67,23 @@ class FilterConfigImpl : public FilterConfig {
 public:
   FilterConfigImpl(const std::string& stats_prefix, Stats::Scope& scope,
                    const std::string& host_rewrite, const std::string& key,
-                   const std::string& value);
+                   const std::string& value,
+                   const bool& associative_container_use_contains,
+                   const bool& enum_members_in_scope,
+                   const bool& str_starts_with, const bool& str_ends_with);
 
   FilterStats& stats() override;
   const std::string& hostRewrite() const override;
 
+  // Header variables
   const std::string& key() const override;
   const std::string& val() const override;
+
+  // Variables to enable C++20 features
+  const bool& associativeContainerUseContains() const override;
+  const bool& enumMembersInScope() const override;
+  const bool& strStartsWith() const override;
+  const bool& strEndsWith() const override;
 
 private:
   FilterStats stats_;
@@ -76,6 +91,11 @@ private:
 
   std::string key_;
   std::string val_;
+
+  bool associative_container_use_contains_;
+  bool enum_members_in_scope_;
+  bool str_starts_with_;
+  bool str_ends_with_;
 };
 
 /**

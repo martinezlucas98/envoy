@@ -23,6 +23,10 @@ service_name: s3
 region: us-west-2
 key: fooKey
 value: fooValue
+associative_container_use_contains: true
+enum_members_in_scope: true
+str_starts_with: true
+str_ends_with: true
   )EOF";
 
   HttpExampleCpp20ProtoConfig proto_config;

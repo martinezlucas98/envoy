@@ -17,7 +17,7 @@ option (udpa.annotations.file_status).package_version_status = ACTIVE;
 // [#extension: envoy.filters.http.aws_request_signing]
 
 // Top level configuration for the AWS request signing filter.
-// [#next-free-field: 6]
+// [#next-free-field: 10]
 message HttpExampleCpp20 {
   //option (udpa.annotations.versioning).previous_message_type =
   //"envoy.config.filter.http.http_example_cpp20.v2alpha.HttpExampleCpp20";
@@ -49,4 +49,12 @@ message HttpExampleCpp20 {
   string key = 4;
 
   string value = 5;
+
+  bool associative_container_use_contains = 6;
+
+  bool enum_members_in_scope = 7;
+
+  bool str_starts_with = 8;
+
+  bool str_ends_with = 9;
 }
