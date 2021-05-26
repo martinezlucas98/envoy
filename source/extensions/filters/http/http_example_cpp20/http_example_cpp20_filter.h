@@ -46,7 +46,7 @@ public:
   /**
    * @return the host rewrite value.
    */
-  virtual const std::string& hostRewrite() const PURE;
+  //virtual const std::string& hostRewrite() const PURE;
 
   // FilterConfig(const sample::Decoder& proto_config);
   virtual const std::string& key() const PURE;
@@ -66,14 +66,13 @@ using FilterConfigSharedPtr = std::shared_ptr<FilterConfig>;
 class FilterConfigImpl : public FilterConfig {
 public:
   FilterConfigImpl(const std::string& stats_prefix, Stats::Scope& scope,
-                   const std::string& host_rewrite, const std::string& key,
-                   const std::string& value,
-                   const bool& associative_container_use_contains,
-                   const bool& enum_members_in_scope,
-                   const bool& str_starts_with, const bool& str_ends_with);
+                   /*const std::string& host_rewrite,*/ const std::string& key,
+                   const std::string& value, const bool& associative_container_use_contains,
+                   const bool& enum_members_in_scope, const bool& str_starts_with,
+                   const bool& str_ends_with);
 
   FilterStats& stats() override;
-  const std::string& hostRewrite() const override;
+  //const std::string& hostRewrite() const override;
 
   // Header variables
   const std::string& key() const override;
@@ -87,7 +86,7 @@ public:
 
 private:
   FilterStats stats_;
-  std::string host_rewrite_;
+  //std::string host_rewrite_;
 
   std::string key_;
   std::string val_;

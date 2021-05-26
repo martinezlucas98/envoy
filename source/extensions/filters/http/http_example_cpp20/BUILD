@@ -28,8 +28,8 @@ envoy_cc_extension(
     name = "config",
     srcs = ["config.cc"],
     hdrs = ["config.h"],
-    copts = ["-std=c++20"],
     category = "envoy.filters.http",
+    copts = ["-std=c++20"],
     security_posture = "requires_trusted_downstream_and_upstream",
     status = "alpha",
     deps = [

@@ -16,7 +16,9 @@ Http::FilterFactoryCb HttpExampleCpp20FilterFactory::createFilterFactoryFromProt
     const std::string& stats_prefix, Server::Configuration::FactoryContext& context) {
 
   auto filter_config = std::make_shared<FilterConfigImpl>(
-      stats_prefix, context.scope(), config.host_rewrite(), config.key(), config.value(), config.associative_container_use_contains(), config.enum_members_in_scope(), config.str_starts_with(), config.str_ends_with());
+      stats_prefix, context.scope(), /*config.host_rewrite(),*/ config.key(), config.value(),
+      config.associative_container_use_contains(), config.enum_members_in_scope(),
+      config.str_starts_with(), config.str_ends_with());
 
   return [filter_config](Http::FilterChainFactoryCallbacks& callbacks) -> void {
     auto filter = std::make_shared<Filter>(filter_config);

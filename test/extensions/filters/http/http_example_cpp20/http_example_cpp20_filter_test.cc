@@ -14,7 +14,7 @@ namespace {
 class MockFilterConfig : public HttpExampleCpp20::FilterConfig {
 public:
   HttpExampleCpp20::FilterStats& stats() override { return stats_; }
-  const std::string& hostRewrite() const override { return host_rewrite_; }
+  // const std::string& hostRewrite() const override { return host_rewrite_; }
 
   const std::string& key() const override { return key_; }
   const std::string& val() const override { return val_; }
@@ -29,7 +29,7 @@ public:
   Stats::IsolatedStoreImpl stats_store_;
   HttpExampleCpp20::FilterStats stats_{
       HttpExampleCpp20::Filter::generateStats("test", stats_store_)};
-  std::string host_rewrite_;
+  // std::string host_rewrite_;
   std::string key_;
   std::string val_;
 
@@ -52,7 +52,7 @@ public:
 
 TEST_F(HttpExampleCpp20FilterTest, RequestWithHeader) {
   setup();
-  filter_config_->host_rewrite_ = "foo";
+  // filter_config_->host_rewrite_ = "foo";
   filter_config_->key_ = "fooKey";
   filter_config_->val_ = "fooVal";
 
@@ -63,6 +63,8 @@ TEST_F(HttpExampleCpp20FilterTest, RequestWithHeader) {
   EXPECT_EQ("fooVal", ret.result().value());
 }
 
+//#if defined(__cpp_lib_generic_unordered_lookup)
+#if defined(__cpp_lib_generic_associative_lookup)
 TEST_F(HttpExampleCpp20FilterTest, AssociativeContainerUseContains) {
   setup();
   filter_config_->associative_container_use_contains_ = true;
@@ -88,6 +90,9 @@ TEST_F(HttpExampleCpp20FilterTest, AssociativeContainerUseContains) {
     EXPECT_FALSE(ret.result().has_value());
   }
 }
+#endif
+//#endif
+
 #if defined(__cpp_using_enum)
 TEST_F(HttpExampleCpp20FilterTest, EnumMembersInScope) {
   setup();
@@ -115,6 +120,7 @@ TEST_F(HttpExampleCpp20FilterTest, EnumMembersInScope) {
 }
 #endif
 
+#if defined(__cpp_lib_starts_ends_with)
 TEST_F(HttpExampleCpp20FilterTest, StrStartsWith) {
   setup();
 
@@ -164,6 +170,7 @@ TEST_F(HttpExampleCpp20FilterTest, StrEndsWith) {
     EXPECT_FALSE(ret.result().has_value());
   }
 }
+#endif
 
 } // namespace
 } // namespace HttpExampleCpp20Filter
