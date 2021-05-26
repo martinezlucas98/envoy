@@ -18,9 +18,9 @@ using HttpExampleCpp20ProtoConfig =
     envoy::extensions::filters::http::http_example_cpp20::v3::HttpExampleCpp20;
 
 TEST(HttpExampleCpp20FilterConfigTest, SimpleConfig) {
+  /*service_name: s3
+  region: us-west-2*/
   const std::string yaml = R"EOF(
-service_name: s3
-region: us-west-2
 key: fooKey
 value: fooValue
 associative_container_use_contains: true
