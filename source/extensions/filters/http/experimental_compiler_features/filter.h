@@ -1,9 +1,8 @@
 #pragma once
 
-//#include "envoy/extensions/filters/http/aws_request_signing/v3/aws_request_signing.pb.h"
 #include <string>
 
-#include "envoy/extensions/filters/http/http_example_cpp20/v3/http_example_cpp20.pb.h"
+#include "envoy/extensions/filters/http/experimental_compiler_features/v3/experimental_compiler_features.pb.h"
 #include "envoy/http/filter.h"
 #include "envoy/stats/scope.h"
 #include "envoy/stats/stats_macros.h"
@@ -13,13 +12,10 @@
 namespace Envoy {
 namespace Extensions {
 namespace HttpFilters {
-namespace HttpExampleCpp20 {
+namespace ExperimentalCompilerFeatures {
 
-/**
- * All stats for the AWS request signing filter. @see stats_macros.h
- */
 // clang-format off
-#define ALL_HTTP_EXAMPLE_CPP20_FILTER_STATS(COUNTER)                                                           \
+#define ALL_experimental_compiler_features_FILTER_STATS(COUNTER)                                                           \
   COUNTER(signing_added)                                                                        \
   COUNTER(signing_failed)
 // clang-format on
@@ -28,7 +24,7 @@ namespace HttpExampleCpp20 {
  * Wrapper struct filter stats. @see stats_macros.h
  */
 struct FilterStats {
-  ALL_HTTP_EXAMPLE_CPP20_FILTER_STATS(GENERATE_COUNTER_STRUCT)
+  ALL_experimental_compiler_features_FILTER_STATS(GENERATE_COUNTER_STRUCT)
 };
 
 /**
@@ -46,9 +42,6 @@ public:
   /**
    * @return the host rewrite value.
    */
-  // virtual const std::string& hostRewrite() const PURE;
-
-  // FilterConfig(const sample::Decoder& proto_config);
   virtual const std::string& key() const PURE;
   virtual const std::string& val() const PURE;
 
@@ -56,6 +49,9 @@ public:
   virtual const bool& enumMembersInScope() const PURE;
   virtual const bool& strStartsWith() const PURE;
   virtual const bool& strEndsWith() const PURE;
+
+  // These vars are used for testing only.
+  virtual const std::string& enumValue() const PURE;
 };
 
 using FilterConfigSharedPtr = std::shared_ptr<FilterConfig>;
@@ -65,16 +61,14 @@ using FilterConfigSharedPtr = std::shared_ptr<FilterConfig>;
  */
 class FilterConfigImpl : public FilterConfig {
 public:
-  FilterConfigImpl(const std::string& stats_prefix, Stats::Scope& scope,
-                   /*const std::string& host_rewrite,*/ const std::string& key,
+  FilterConfigImpl(const std::string& stats_prefix, Stats::Scope& scope, const std::string& key,
                    const std::string& value, const bool& associative_container_use_contains,
                    const bool& enum_members_in_scope, const bool& str_starts_with,
-                   const bool& str_ends_with);
+                   const bool& str_ends_with, const std::string enum_value);
 
   FilterStats& stats() override;
-  // const std::string& hostRewrite() const override;
 
-  // Header variables
+  // Basic key-value header variables
   const std::string& key() const override;
   const std::string& val() const override;
 
@@ -84,9 +78,11 @@ public:
   const bool& strStartsWith() const override;
   const bool& strEndsWith() const override;
 
+  // These vars are used for testing only.
+  const std::string& enumValue() const override;
+
 private:
   FilterStats stats_;
-  // std::string host_rewrite_;
 
   std::string key_;
   std::string val_;
@@ -95,6 +91,9 @@ private:
   bool enum_members_in_scope_;
   bool str_starts_with_;
   bool str_ends_with_;
+
+  // These vars are used for testing only.
+  std::string enum_value_;
 };
 
 /**
@@ -110,12 +109,16 @@ public:
                                           bool end_stream) override;
 
 private:
+  friend class FilterTest;
+  // These vars are used for testing only.
+  std::string enum_value_{"foo"};
+
   std::shared_ptr<FilterConfig> config_;
   const Http::LowerCaseString headerKey() const;
   const std::string headerValue() const;
 };
 
-} // namespace HttpExampleCpp20
+} // namespace ExperimentalCompilerFeatures
 } // namespace HttpFilters
 } // namespace Extensions
 } // namespace Envoy

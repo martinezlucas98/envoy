@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package envoy.extensions.filters.http.experimental_compiler_features.v3;
+
+import "udpa/annotations/status.proto";
+
+option java_package = "io.envoyproxy.envoy.extensions.filters.http.experimental_compiler_features.v3";
+option java_outer_classname = "ExperimentalCompilerFeaturesProto";
+option java_multiple_files = true;
+option (udpa.annotations.file_status).package_version_status = ACTIVE;
+
+// [#next-free-field: 8]
+message ExperimentalCompilerFeatures {
+  string key = 1;
+
+  string value = 2;
+
+  bool associative_container_use_contains = 3;
+
+  bool enum_members_in_scope = 4;
+
+  // the enum_value variable is used for testing only.
+  string enum_value = 5;
+
+  bool str_starts_with = 6;
+
+  bool str_ends_with = 7;
+}

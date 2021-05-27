@@ -87,7 +87,8 @@ public:
   // External Processing filter
   const std::string ExternalProcessing = "envoy.filters.http.ext_proc";
   // Http example cpp20 filter
-  const std::string HttpExampleCpp20 = "envoy.filters.http.http_example_cpp20";
+  const std::string ExperimentalCompilerFeatures =
+      "envoy.filters.http.experimental_compiler_features";
 };
 
 using HttpFilterNames = ConstSingleton<HttpFilterNameValues>;

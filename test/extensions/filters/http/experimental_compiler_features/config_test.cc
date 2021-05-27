@@ -1,7 +1,7 @@
-#include "envoy/extensions/filters/http/http_example_cpp20/v3/http_example_cpp20.pb.h"
-#include "envoy/extensions/filters/http/http_example_cpp20/v3/http_example_cpp20.pb.validate.h"
+#include "envoy/extensions/filters/http/experimental_compiler_features/v3/experimental_compiler_features.pb.h"
+#include "envoy/extensions/filters/http/experimental_compiler_features/v3/experimental_compiler_features.pb.validate.h"
 
-#include "extensions/filters/http/http_example_cpp20/config.h"
+#include "extensions/filters/http/experimental_compiler_features/config.h"
 
 #include "test/mocks/server/factory_context.h"
 #include "test/test_common/utility.h"
@@ -12,14 +12,12 @@
 namespace Envoy {
 namespace Extensions {
 namespace HttpFilters {
-namespace HttpExampleCpp20Filter {
+namespace ExperimentalCompilerFeatures {
 
-using HttpExampleCpp20ProtoConfig =
-    envoy::extensions::filters::http::http_example_cpp20::v3::HttpExampleCpp20;
+using ExperimentalCompilerFeaturesProtoConfig = envoy::extensions::filters::http::
+    experimental_compiler_features::v3::ExperimentalCompilerFeatures;
 
-TEST(HttpExampleCpp20FilterConfigTest, SimpleConfig) {
-  /*service_name: s3
-  region: us-west-2*/
+TEST(ExperimentalCompilerFeaturesConfigTest, SimpleConfig) {
   const std::string yaml = R"EOF(
 key: fooKey
 value: fooValue
@@ -29,11 +27,11 @@ str_starts_with: true
 str_ends_with: true
   )EOF";
 
-  HttpExampleCpp20ProtoConfig proto_config;
+  ExperimentalCompilerFeaturesProtoConfig proto_config;
   TestUtility::loadFromYamlAndValidate(yaml, proto_config);
 
   testing::NiceMock<Server::Configuration::MockFactoryContext> context;
-  HttpExampleCpp20::HttpExampleCpp20FilterFactory factory;
+  ExperimentalCompilerFeatures::ExperimentalCompilerFeaturesFactory factory;
 
   Http::FilterFactoryCb cb = factory.createFilterFactoryFromProto(proto_config, "stats", context);
   Http::MockFilterChainFactoryCallbacks filter_callbacks;
@@ -41,7 +39,7 @@ str_ends_with: true
   cb(filter_callbacks);
 }
 
-} // namespace HttpExampleCpp20Filter
+} // namespace ExperimentalCompilerFeatures
 } // namespace HttpFilters
 } // namespace Extensions
 } // namespace Envoy
