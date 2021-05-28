@@ -52,6 +52,8 @@ public:
 
   // These vars are used for testing only.
   virtual const std::string& enumValue() const PURE;
+  virtual const std::string& startEndString() const PURE;
+  virtual const std::string& associativeContainerString() const PURE;
 };
 
 using FilterConfigSharedPtr = std::shared_ptr<FilterConfig>;
@@ -64,7 +66,9 @@ public:
   FilterConfigImpl(const std::string& stats_prefix, Stats::Scope& scope, const std::string& key,
                    const std::string& value, const bool& associative_container_use_contains,
                    const bool& enum_members_in_scope, const bool& str_starts_with,
-                   const bool& str_ends_with, const std::string enum_value);
+                   const bool& str_ends_with, const std::string enum_value,
+                   const std::string& start_end_string,
+                   const std::string& associative_container_string);
 
   FilterStats& stats() override;
 
@@ -80,6 +84,8 @@ public:
 
   // These vars are used for testing only.
   const std::string& enumValue() const override;
+  const std::string& startEndString() const override;
+  const std::string& associativeContainerString() const override;
 
 private:
   FilterStats stats_;
@@ -94,6 +100,8 @@ private:
 
   // These vars are used for testing only.
   std::string enum_value_;
+  std::string start_end_string_;
+  std::string associative_container_string_;
 };
 
 /**

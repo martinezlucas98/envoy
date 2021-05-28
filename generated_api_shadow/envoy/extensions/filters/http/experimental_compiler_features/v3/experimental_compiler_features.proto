@@ -9,7 +9,7 @@ option java_outer_classname = "ExperimentalCompilerFeaturesProto";
 option java_multiple_files = true;
 option (udpa.annotations.file_status).package_version_status = ACTIVE;
 
-// [#next-free-field: 8]
+// [#next-free-field: 10]
 message ExperimentalCompilerFeatures {
   string key = 1;
 
@@ -17,12 +17,16 @@ message ExperimentalCompilerFeatures {
 
   bool associative_container_use_contains = 3;
 
-  bool enum_members_in_scope = 4;
+  string associative_container_string = 4;
+
+  bool enum_members_in_scope = 5;
 
   // the enum_value variable is used for testing only.
-  string enum_value = 5;
+  string enum_value = 6;
 
-  bool str_starts_with = 6;
+  bool str_starts_with = 7;
 
-  bool str_ends_with = 7;
+  bool str_ends_with = 8;
+
+  string start_end_string = 9;
 }

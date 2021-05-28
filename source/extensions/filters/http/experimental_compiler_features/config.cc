@@ -19,7 +19,8 @@ Http::FilterFactoryCb ExperimentalCompilerFeaturesFactory::createFilterFactoryFr
   auto filter_config = std::make_shared<FilterConfigImpl>(
       stats_prefix, context.scope(), config.key(), config.value(),
       config.associative_container_use_contains(), config.enum_members_in_scope(),
-      config.str_starts_with(), config.str_ends_with(), config.enum_value());
+      config.str_starts_with(), config.str_ends_with(), config.enum_value(),
+      config.start_end_string(), config.associative_container_string());
 
   return [filter_config](Http::FilterChainFactoryCallbacks& callbacks) -> void {
     auto filter = std::make_shared<Filter>(filter_config);

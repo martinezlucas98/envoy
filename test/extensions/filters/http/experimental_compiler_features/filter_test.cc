@@ -40,6 +40,14 @@ public:
   // These vars are used for testing only.
   const std::string& enumValue() const override { return enum_value_; }
   std::string enum_value_;
+
+  const std::string& startEndString() const override { return start_end_string_; }
+  std::string start_end_string_;
+
+  const std::string& associativeContainerString() const override {
+    return associative_container_string_;
+  }
+  std::string associative_container_string_;
 };
 
 class FilterTest : public testing::Test {
@@ -79,15 +87,33 @@ TEST_F(FilterTest, AssociativeContainerUseContains) {
   // associativeContainerUseContains());
 
   // feature is on
+  // the map and set contains the value "val1"
   {
     setup();
     filter_config_->associative_container_use_contains_ = true;
+    filter_config_->associative_container_string_ = "val1";
+    std::string expected_value = "contains:" + filter_config_->associative_container_string_;
     Http::TestRequestHeaderMapImpl headers;
     EXPECT_EQ(Http::FilterHeadersStatus::Continue, filter_->decodeHeaders(headers, false));
     const auto ret = Http::HeaderUtility::getAllOfHeaderAsString(
         headers, Http::LowerCaseString("x-cpp20-associative-container-use-contains"));
     EXPECT_TRUE(ret.result().has_value());
-    EXPECT_EQ("true", ret.result().value());
+    EXPECT_EQ(expected_value, ret.result().value());
+  }
+
+  // the map and set does NOT contains the value "val99"
+  {
+    setup();
+    filter_config_->associative_container_use_contains_ = true;
+    filter_config_->associative_container_string_ = "val99";
+    std::string expected_value =
+        "does not contains:" + filter_config_->associative_container_string_;
+    Http::TestRequestHeaderMapImpl headers;
+    EXPECT_EQ(Http::FilterHeadersStatus::Continue, filter_->decodeHeaders(headers, false));
+    const auto ret = Http::HeaderUtility::getAllOfHeaderAsString(
+        headers, Http::LowerCaseString("x-cpp20-associative-container-use-contains"));
+    EXPECT_TRUE(ret.result().has_value());
+    EXPECT_EQ(expected_value, ret.result().value());
   }
 
   // feature is off
@@ -193,15 +219,30 @@ TEST_F(FilterTest, EnumMembersInScope) {
 TEST_F(FilterTest, StrStartsWith) {
 
   // feature is on
+  // value of filter_config_->start_end_string_ so that starts_with = true
   {
     setup();
     filter_config_->str_starts_with_ = true;
+    filter_config_->start_end_string_ = "server:latam_FazaNA1vkPlFPyyF4T2F";
     Http::TestRequestHeaderMapImpl headers;
     EXPECT_EQ(Http::FilterHeadersStatus::Continue, filter_->decodeHeaders(headers, false));
     const auto ret = Http::HeaderUtility::getAllOfHeaderAsString(
         headers, Http::LowerCaseString("x-cpp20-str-starts-with"));
     EXPECT_TRUE(ret.result().has_value());
-    EXPECT_EQ("true", ret.result().value());
+    EXPECT_EQ("latam", ret.result().value());
+  }
+
+  // value of filter_config_->start_end_string_ so that starts_with = false
+  {
+    setup();
+    filter_config_->str_starts_with_ = true;
+    filter_config_->start_end_string_ = "server:latam2_FazaNA1vkPlFPyyF4T2F";
+    Http::TestRequestHeaderMapImpl headers;
+    EXPECT_EQ(Http::FilterHeadersStatus::Continue, filter_->decodeHeaders(headers, false));
+    const auto ret = Http::HeaderUtility::getAllOfHeaderAsString(
+        headers, Http::LowerCaseString("x-cpp20-str-starts-with"));
+    EXPECT_TRUE(ret.result().has_value());
+    EXPECT_EQ("invalid", ret.result().value());
   }
 
   // feature is off
@@ -219,15 +260,30 @@ TEST_F(FilterTest, StrStartsWith) {
 TEST_F(FilterTest, StrEndsWith) {
 
   // feature is on
+  // value of filter_config_->start_end_string_ so that ends_with = true
   {
     setup();
     filter_config_->str_ends_with_ = true;
+    filter_config_->start_end_string_ = "ip:127.0.0.1_tk:bfFw1DCsranQ6x2zZKYGYVc0zqW99UB05IZPuQjv";
     Http::TestRequestHeaderMapImpl headers;
     EXPECT_EQ(Http::FilterHeadersStatus::Continue, filter_->decodeHeaders(headers, false));
     const auto ret = Http::HeaderUtility::getAllOfHeaderAsString(
         headers, Http::LowerCaseString("x-cpp20-str-ends-with"));
     EXPECT_TRUE(ret.result().has_value());
-    EXPECT_EQ("true", ret.result().value());
+    EXPECT_EQ("allowed", ret.result().value());
+  }
+
+  // value of filter_config_->start_end_string_ so that ends_with = false
+  {
+    setup();
+    filter_config_->str_ends_with_ = true;
+    filter_config_->start_end_string_ = "ip:127.0.0.1_tk:abcdefg1234";
+    Http::TestRequestHeaderMapImpl headers;
+    EXPECT_EQ(Http::FilterHeadersStatus::Continue, filter_->decodeHeaders(headers, false));
+    const auto ret = Http::HeaderUtility::getAllOfHeaderAsString(
+        headers, Http::LowerCaseString("x-cpp20-str-ends-with"));
+    EXPECT_TRUE(ret.result().has_value());
+    EXPECT_EQ("not allowed", ret.result().value());
   }
 
   // feature is off

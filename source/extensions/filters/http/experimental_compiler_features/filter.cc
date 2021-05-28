@@ -13,11 +13,14 @@ FilterConfigImpl::FilterConfigImpl(const std::string& stats_prefix, Stats::Scope
                                    const std::string& key, const std::string& value,
                                    const bool& associative_container_use_contains,
                                    const bool& enum_members_in_scope, const bool& str_starts_with,
-                                   const bool& str_ends_with, const std::string enum_value)
+                                   const bool& str_ends_with, const std::string enum_value,
+                                   const std::string& start_end_string,
+                                   const std::string& associative_container_string)
     : stats_(Filter::generateStats(stats_prefix, scope)), key_(key), val_(value),
       associative_container_use_contains_(associative_container_use_contains),
       enum_members_in_scope_(enum_members_in_scope), str_starts_with_(str_starts_with),
-      str_ends_with_(str_ends_with), enum_value_(enum_value) {}
+      str_ends_with_(str_ends_with), enum_value_(enum_value), start_end_string_(start_end_string),
+      associative_container_string_(associative_container_string) {}
 
 Filter::Filter(const std::shared_ptr<FilterConfig>& config) : config_(config) {}
 
@@ -35,6 +38,10 @@ const bool& FilterConfigImpl::strEndsWith() const { return str_ends_with_; }
 
 // These vars are used for testing only.
 const std::string& FilterConfigImpl::enumValue() const { return enum_value_; }
+const std::string& FilterConfigImpl::startEndString() const { return start_end_string_; }
+const std::string& FilterConfigImpl::associativeContainerString() const {
+  return associative_container_string_;
+}
 
 FilterStats Filter::generateStats(const std::string& prefix, Stats::Scope& scope) {
   const std::string final_prefix = prefix + "experimental_compiler_features.";
@@ -59,13 +66,20 @@ Http::FilterHeadersStatus Filter::decodeHeaders(Http::RequestHeaderMap& headers,
 #if defined(__cpp_lib_generic_associative_lookup)
   if (config_->associativeContainerUseContains()) {
     std::map<std::string, std::string> map{{"val1", "key1"}, {"val2", "key2"}, {"val3", "key3"}};
-    map.contains("val1");  // true
-    map.contains("val99"); // false
+    // map.contains("val1");  // true
+    // map.contains("val99"); // false
 
-    std::set<std::string> set{"value1", "value2", "value3", "value4"};
-    set.contains("value3"); // true
+    std::set<std::string> set{"val1", "val2", "val3"};
+    // set.contains("val3"); // true
 
-    headers.addCopy(Http::LowerCaseString("x-cpp20-associative-container-use-contains"), "true");
+    std::string str_to_find = config_->associativeContainerString();
+    if (map.contains(str_to_find) && set.contains(str_to_find)) {
+      headers.addCopy(Http::LowerCaseString("x-cpp20-associative-container-use-contains"),
+                      "contains:" + str_to_find);
+    } else {
+      headers.addCopy(Http::LowerCaseString("x-cpp20-associative-container-use-contains"),
+                      "does not contains:" + str_to_find);
+    }
   }
 #endif
 
@@ -116,25 +130,24 @@ Http::FilterHeadersStatus Filter::decodeHeaders(Http::RequestHeaderMap& headers,
 
 #if defined(__cpp_lib_starts_ends_with)
   if (config_->strStartsWith()) {
-    std::string foo_header_val = "server:latam_FazaNA1vkPlFPyyF4T2F";
+    std::string foo_header_val = config_->startEndString();
 
     if (foo_header_val.starts_with("server:latam_")) { // true
-      // we can do something here
+      headers.addCopy(Http::LowerCaseString("x-cpp20-str-starts-with"), "latam");
+    } else {
+      headers.addCopy(Http::LowerCaseString("x-cpp20-str-starts-with"), "invalid");
     }
-    headers.addCopy(Http::LowerCaseString("x-cpp20-str-starts-with"), "true");
   }
 
   if (config_->strEndsWith()) {
     std::string foo_allowed_token = "bfFw1DCsranQ6x2zZKYGYVc0zqW99UB05IZPuQjv";
-    std::string foo_header_val = "ip:127.0.0.1_tk:bfFw1DCsranQ6x2zZKYGYVc0zqW99UB05IZPuQjv";
+    std::string foo_header_val = config_->startEndString();
 
     if (foo_header_val.ends_with("_tk:" + foo_allowed_token)) { // true
-      // we can do something here
+      headers.addCopy(Http::LowerCaseString("x-cpp20-str-ends-with"), "allowed");
     } else {
-      // we can do something else here
+      headers.addCopy(Http::LowerCaseString("x-cpp20-str-ends-with"), "not allowed");
     }
-
-    headers.addCopy(Http::LowerCaseString("x-cpp20-str-ends-with"), "true");
   }
 #endif
 
