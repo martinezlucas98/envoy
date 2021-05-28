@@ -12,7 +12,7 @@ namespace HttpFilters {
 namespace ExperimentalCompilerFeatures {
 
 /**
- * Config registration for the HTTP example cpp20 filter.
+ * Config registration for the Experimental Compiler Features filter.
  */
 class ExperimentalCompilerFeaturesFactory
     : public Common::FactoryBase<envoy::extensions::filters::http::experimental_compiler_features::
@@ -25,7 +25,7 @@ private:
   Http::FilterFactoryCb createFilterFactoryFromProtoTyped(
       const envoy::extensions::filters::http::experimental_compiler_features::v3::
           ExperimentalCompilerFeatures& proto_config,
-      const std::string& stats_prefix, Server::Configuration::FactoryContext& context) override;
+      const std::string&, Server::Configuration::FactoryContext&) override;
 };
 
 } // namespace ExperimentalCompilerFeatures

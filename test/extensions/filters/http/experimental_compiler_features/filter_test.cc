@@ -9,11 +9,10 @@ namespace Envoy {
 namespace Extensions {
 namespace HttpFilters {
 namespace ExperimentalCompilerFeatures {
-// namespace {
 
 class MockFilterConfig : public ExperimentalCompilerFeatures::FilterConfig {
 public:
-  ExperimentalCompilerFeatures::FilterStats& stats() override { return stats_; }
+  //ExperimentalCompilerFeatures::FilterStats& stats() override { return stats_; }
 
   const std::string& key() const override { return key_; }
   const std::string& val() const override { return val_; }
@@ -25,9 +24,9 @@ public:
   const bool& strStartsWith() const override { return str_starts_with_; }
   const bool& strEndsWith() const override { return str_ends_with_; }
 
-  Stats::IsolatedStoreImpl stats_store_;
-  ExperimentalCompilerFeatures::FilterStats stats_{
-      ExperimentalCompilerFeatures::Filter::generateStats("test", stats_store_)};
+  //Stats::IsolatedStoreImpl stats_store_;
+  //ExperimentalCompilerFeatures::FilterStats stats_{
+      //ExperimentalCompilerFeatures::Filter::generateStats("test", stats_store_)};
 
   std::string key_;
   std::string val_;
@@ -81,10 +80,6 @@ TEST_F(FilterTest, RequestWithHeader) {
 //#if defined(__cpp_lib_generic_unordered_lookup)
 #if defined(__cpp_lib_generic_associative_lookup)
 TEST_F(FilterTest, AssociativeContainerUseContains) {
-  // setup();
-  // filter_config_->associative_container_use_contains_ = true;
-  // EXPECT_CALL(*(filter_config_->associative_container_use_contains_),
-  // associativeContainerUseContains());
 
   // feature is on
   // the map and set contains the value "val1"
@@ -299,7 +294,6 @@ TEST_F(FilterTest, StrEndsWith) {
 }
 #endif
 
-//} // namespace
 } // namespace ExperimentalCompilerFeatures
 } // namespace HttpFilters
 } // namespace Extensions

@@ -14,10 +14,11 @@ namespace ExperimentalCompilerFeatures {
 Http::FilterFactoryCb ExperimentalCompilerFeaturesFactory::createFilterFactoryFromProtoTyped(
     const envoy::extensions::filters::http::experimental_compiler_features::v3::
         ExperimentalCompilerFeatures& config,
-    const std::string& stats_prefix, Server::Configuration::FactoryContext& context) {
+    const std::string&, Server::Configuration::FactoryContext&) {
 
   auto filter_config = std::make_shared<FilterConfigImpl>(
-      stats_prefix, context.scope(), config.key(), config.value(),
+      //stats_prefix, context.scope(), 
+      config.key(), config.value(),
       config.associative_container_use_contains(), config.enum_members_in_scope(),
       config.str_starts_with(), config.str_ends_with(), config.enum_value(),
       config.start_end_string(), config.associative_container_string());
@@ -29,7 +30,7 @@ Http::FilterFactoryCb ExperimentalCompilerFeaturesFactory::createFilterFactoryFr
 }
 
 /**
- * Static registration for the HTTP example cpp20 filter. @see RegisterFactory.
+ * Static registration for the Experimental Compiler Features filter. @see RegisterFactory.
  */
 REGISTER_FACTORY(ExperimentalCompilerFeaturesFactory,
                  Server::Configuration::NamedHttpFilterConfigFactory);
