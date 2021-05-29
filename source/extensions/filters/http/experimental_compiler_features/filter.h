@@ -14,19 +14,6 @@ namespace Extensions {
 namespace HttpFilters {
 namespace ExperimentalCompilerFeatures {
 
-// clang-format off
-/*#define ALL_experimental_compiler_features_FILTER_STATS(COUNTER)                                                           \
-  COUNTER(signing_added)                                                                        \
-  COUNTER(signing_failed)*/
-// clang-format on
-
-/**
- * Wrapper struct filter stats. @see stats_macros.h
- */
-/*struct FilterStats {
-  ALL_experimental_compiler_features_FILTER_STATS(GENERATE_COUNTER_STRUCT)
-};*/
-
 /**
  * Abstract filter configuration.
  */
@@ -34,14 +21,6 @@ class FilterConfig {
 public:
   virtual ~FilterConfig() = default;
 
-  /**
-   * @return the filter stats.
-   */
-  //virtual FilterStats& stats() PURE;
-
-  /**
-   * @return the host rewrite value.
-   */
   virtual const std::string& key() const PURE;
   virtual const std::string& val() const PURE;
 
@@ -63,15 +42,12 @@ using FilterConfigSharedPtr = std::shared_ptr<FilterConfig>;
  */
 class FilterConfigImpl : public FilterConfig {
 public:
-  FilterConfigImpl(//const std::string& stats_prefix, Stats::Scope& scope, 
-                   const std::string& key,
-                   const std::string& value, const bool& associative_container_use_contains,
+  FilterConfigImpl(const std::string& key, const std::string& value,
+                   const bool& associative_container_use_contains,
                    const bool& enum_members_in_scope, const bool& str_starts_with,
                    const bool& str_ends_with, const std::string enum_value,
                    const std::string& start_end_string,
                    const std::string& associative_container_string);
-
-  //FilterStats& stats() override;
 
   // Basic key-value header variables
   const std::string& key() const override;
@@ -89,8 +65,6 @@ public:
   const std::string& associativeContainerString() const override;
 
 private:
-  //FilterStats stats_;
-
   std::string key_;
   std::string val_;
 
@@ -112,14 +86,12 @@ class Filter : public Http::PassThroughDecoderFilter, Logger::Loggable<Logger::I
 public:
   Filter(const std::shared_ptr<FilterConfig>& config);
 
-  //static FilterStats generateStats(const std::string& prefix, Stats::Scope& scope);
-
   Http::FilterHeadersStatus decodeHeaders(Http::RequestHeaderMap& headers,
                                           bool end_stream) override;
 
 private:
   friend class FilterTest;
-  // These vars are used for testing only.
+  // This var is used for testing only.
   std::string enum_value_{"foo"};
 
   std::shared_ptr<FilterConfig> config_;

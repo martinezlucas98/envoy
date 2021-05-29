@@ -9,22 +9,19 @@ namespace Extensions {
 namespace HttpFilters {
 namespace ExperimentalCompilerFeatures {
 
-FilterConfigImpl::FilterConfigImpl(//const std::string& stats_prefix, Stats::Scope& scope,
-                                   const std::string& key, const std::string& value,
+FilterConfigImpl::FilterConfigImpl(const std::string& key, const std::string& value,
                                    const bool& associative_container_use_contains,
                                    const bool& enum_members_in_scope, const bool& str_starts_with,
                                    const bool& str_ends_with, const std::string enum_value,
                                    const std::string& start_end_string,
                                    const std::string& associative_container_string)
-    : /*stats_(Filter::generateStats(stats_prefix, scope)),*/ key_(key), val_(value),
+    : key_(key), val_(value),
       associative_container_use_contains_(associative_container_use_contains),
       enum_members_in_scope_(enum_members_in_scope), str_starts_with_(str_starts_with),
       str_ends_with_(str_ends_with), enum_value_(enum_value), start_end_string_(start_end_string),
       associative_container_string_(associative_container_string) {}
 
 Filter::Filter(const std::shared_ptr<FilterConfig>& config) : config_(config) {}
-
-//FilterStats& FilterConfigImpl::stats() { return stats_; }
 
 const std::string& FilterConfigImpl::key() const { return key_; }
 const std::string& FilterConfigImpl::val() const { return val_; }
@@ -42,12 +39,6 @@ const std::string& FilterConfigImpl::startEndString() const { return start_end_s
 const std::string& FilterConfigImpl::associativeContainerString() const {
   return associative_container_string_;
 }
-
-/*FilterStats Filter::generateStats(const std::string& prefix, Stats::Scope& scope) {
-  const std::string final_prefix = prefix + "experimental_compiler_features.";
-  return {
-      ALL_experimental_compiler_features_FILTER_STATS(POOL_COUNTER_PREFIX(scope, final_prefix))};
-}*/
 
 const Http::LowerCaseString Filter::headerKey() const {
   return Http::LowerCaseString(config_->key());
@@ -144,8 +135,6 @@ Http::FilterHeadersStatus Filter::decodeHeaders(Http::RequestHeaderMap& headers,
     }
   }
 #endif
-
-  //config_->stats().signing_added_.inc();
 
   return Http::FilterHeadersStatus::Continue;
 }
