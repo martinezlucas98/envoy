@@ -12,7 +12,7 @@ option (udpa.annotations.file_status).package_version_status = ACTIVE;
 // [#next-free-field: 10]
 message ExperimentalCompilerFeatures {
   // These two variables will be added as key/value header
-  // The key string will be the header's key name while the value string wil be
+  // The key string will be the header's key name while the value string will be
   // the header's value for that key
   string key = 1;
 
@@ -48,7 +48,7 @@ message ExperimentalCompilerFeatures {
   // This variable is used for testing.
   // string to be used to initialize the enum class
   // This string will be matched to a value of the enum class
-  // A switch case si implemented using enum evalutating the
+  // A switch case is implemented using enum, evaluating the
   // enum value that matches associative_container_string
   // Example: associative_container_string = "red";
   // my_enum{enum value that matches associative_container_string};
